@@ -150,25 +150,17 @@ export default class App extends React.Component {
            )
            return (
              <NoteList {...routeProps} notes={notesForFolder} />
-           
-             
            )
        }   }
-         
-         
          />)
-  
         )  }
-
        <Route 
        path= "/note/:noteId"
        render= {routeProps=> {
          const {noteId}= routeProps.match.params
          const note= findNotes(notes, noteId)
          return <NotePage {...routeProps} note={note} />
-
        }} 
-
        />
       </div> )   
   } 
