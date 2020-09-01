@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import { Route } from 'react-router'
 import STORE from './dummy-store'
-import HomePage from './components/homePage'
 import FolderNav from './components/FolderNav'
 import {findFolder, findNotes, getNotes} from './Notes-Functions'
 import NotePageNav from './components/NotePageNav'
@@ -132,42 +131,43 @@ export default class App extends React.Component {
   componentDidMount() {
     // const {folders} = this.state.store
     setTimeout(() => this.setState(STORE), 600);
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   renderMain() {
-    const {notes, folders} = this.state;
+    const {notes} = this.state;
     return (
       <div> 
        {['/', '/folder/:folderId'].map(path => ( 
          <Route 
-         exact path={path}
-         key={path}
-         render={routeProps=> {
-           const {folderId}= routeProps.match.params
-           const notesForFolder = getNotes(
-             notes, folderId
+           exact path={path}
+           key={path}
+           render={routeProps=> {
+             const {folderId}= routeProps.match.params
+             const notesForFolder = getNotes(
+               notes, folderId
            )
            return (
              <NoteList {...routeProps} notes={notesForFolder} />
-           )
-       }   }
-         />)
-        )  }
-       <Route 
+              )
+            } 
+          }
+        />
+      )
+    )    
+  }
+    <Route 
        path= "/note/:noteId"
        render= {routeProps=> {
-         const {noteId}= routeProps.match.params
-         const note= findNotes(notes, noteId)
-         return <NotePage {...routeProps} note={note} />
-       }} 
-       />
-      </div> )   
+            const {noteId}= routeProps.match.params
+            const note= findNotes(notes, noteId)
+            return <NotePage {...routeProps} note={note} />
+          }
+        } 
+     />
+    </div> 
+    )   
   } 
- 
-
-
-
 
   renderNav() {
     const {notes, folders} = this.state;
@@ -182,24 +182,26 @@ export default class App extends React.Component {
           folders={folders}
           notes={notes}
           {...routeProps}
-          />
-        )}
-      />
-      ))} 
-      <Route path="/note/:noteId" render={routeProps=> {
-        const{noteId}=routeProps.match.params
-        const note=findNotes(notes,noteId) || {}
-        const folder=findFolder(folders,note.folderId)
-        return <NotePageNav 
-        {...routeProps} folder={folder}
+            />
+          )}
         />
-      }}
-      />
-      </>
-      
+      )
     )
-    
-  }
+  } 
+    <Route path="/note/:noteId" render={routeProps=> {
+        const{noteId} = routeProps.match.params
+        const note = findNotes(notes,noteId) || {}
+        const folder = findFolder(folders, note.folderId)
+        return <NotePageNav 
+               {...routeProps} 
+               folder={folder}
+            />
+          }
+        }
+      />
+    </>  
+  )
+}
   
 
     //map the folders to the folder state?
